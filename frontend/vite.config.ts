@@ -2,7 +2,8 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === "build" && process.env.GITHUB_PAGES === "true" ? "/excel-plugin/" : "/",
   plugins: [react(), basicSsl()],
   server: {
     host: "localhost",
@@ -12,9 +13,9 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        index: "index.html",
         taskpane: "taskpane.html",
       },
     },
   },
-});
-
+}));
